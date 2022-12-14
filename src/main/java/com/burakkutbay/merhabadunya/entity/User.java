@@ -1,10 +1,10 @@
 package com.burakkutbay.merhabadunya.entity;
 
 public class User {
+
     private Integer id;
     private String name;
     private String surname;
-
 
 
     public User(Integer id, String name, String surname) {
