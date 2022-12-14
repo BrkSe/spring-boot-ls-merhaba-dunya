@@ -1,13 +1,9 @@
 package com.burakkutbay.merhabadunya.controller;
 
 import com.burakkutbay.merhabadunya.entity.User;
-import com.fasterxml.jackson.databind.jsontype.impl.AsDeductionTypeDeserializer;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.nio.charset.StandardCharsets;
 
 @RestController
 public class UserController {
@@ -69,6 +65,7 @@ public class UserController {
         }
 
     }
+
     @GetMapping("/ornek8")
     public ResponseEntity<User> ornek8(@RequestBody User user) {
 
