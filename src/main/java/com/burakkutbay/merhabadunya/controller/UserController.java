@@ -1,83 +1,74 @@
 package com.burakkutbay.merhabadunya.controller;
 
 import com.burakkutbay.merhabadunya.entity.User;
-import org.springframework.http.HttpStatus;
+import com.burakkutbay.merhabadunya.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-//localhost:8080
+import java.util.List;
+
+
+//localhost:8080/crud/
+
+//localhost:8080/crud/save
+//localhost:8080/crud/delete
+
+//MERHABA_WEB_SERVICE/crud/save
+//MERHABA_WEB_SERVICE/crud/delete
 @RestController
+@RequestMapping("/crud")
 public class UserController {
 
-    // localhost:8080/ornek1/burak/kutbay
-    @GetMapping("/ornek1/{isim}/{soyad}")
-    public String orsadasdasdasdasdnek1(@PathVariable("isim") String isim, @PathVariable String soyad) {
 
-        User user = new User(1, isim, soyad);
-        return user.getName() + " " + user.getSurname();
-    }
+    // 2 yöntem daha mevcut
+    // constructor injection
+    // setter injection
 
-    // localhost:8080/ornek2?isim=burak&soyad=kutbay
-    // localhost:8080/ornek2?isim=burak
-    // localhost:8080/ornek2?
-    @GetMapping("/ornek2")
-    public String orntggsdffdsdek2(
-            @RequestParam(value = "isim", required = false, defaultValue = "isim girilmedi") String isim,
-            @RequestParam(value = "soyad", required = false, defaultValue = "soyad girilmedi") String soyad) {
-
-        User user = new User(1, isim, soyad);
-        return user.getName() + " " + user.getSurname();
-
-    }
-
-    //localhost:8080/ornek3?isim=Burak/kutbay
-    // http://localhost:8080/ornek3/kutbay?isim=Burak
-    // Pathvariable önceliği var.
-    @GetMapping("/ornek3/{soyad}")
-    public String ornek3(@RequestParam(value = "isim") String isim, @PathVariable String soyad) {
-        User user = new User(1, isim, soyad);
-        return user.getName() + " " + user.getSurname();
-    }
-
-    @GetMapping("/ornek4")
-    public String ornek4(@RequestBody String isim) {
-
-        return "Kullanıcı İsmi " + isim;
-    }
-
-    @GetMapping("/ornek5")
-    public User ornek5(@RequestBody User user) {
-        return user;
-    }
-
-    @GetMapping("/ornek6")
-    public ResponseEntity<String> ornek6() {
-        ResponseEntity responseEntity = new ResponseEntity("Metota gelindi cevap başarılı", HttpStatus.BAD_REQUEST);
-        return responseEntity;
-    }
-
-    @GetMapping("/ornek7")
-    public ResponseEntity<String> ornek7(@RequestBody User user) {
-        if (user.getName().equals("burak")) {
-            return new ResponseEntity<>("BURAKLAR GİREMEZ", HttpStatus.INTERNAL_SERVER_ERROR);
-
-        } else {
-            return new ResponseEntity<>("Kullanıcı Kayıt Edilmiştir", HttpStatus.SERVICE_UNAVAILABLE);
+    /*
+      CONSTUROCT INJECTION
+       final     UserService userService;
+        public UserController(UserService userService) {
+            this.userService = userService;
         }
+    */
 
+    @Autowired
+    UserService userService;
+
+    @GetMapping("")
+    public List<User> getUsers() {
+        return  userService.getUsers();
     }
 
-    @GetMapping("/ornek8")
-    public ResponseEntity<User> ornek8(@RequestBody User user) {
+    @PostMapping("/save")
+    public List<User> createUser(@RequestBody User user) {
+        return  userService.createUser(user);
+    }
 
-        if (user.getName().equals("burak")) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        } else {
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
-        }
-
+    @PutMapping("/update")
+    public ResponseEntity<String> updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 
 
+    // localhost:8080/crud/delete/2
+    @DeleteMapping("/delete/{id}")
+    public List<User> deleteUser(@PathVariable(value = "id") int id) {
+
+        return userService.deleteUser(id);
+    }
+/*
+  //getter metotda var
+
+    /**
+     * Setter injection
+     * @param userService
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+ */
 }
