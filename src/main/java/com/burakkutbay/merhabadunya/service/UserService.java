@@ -1,28 +1,33 @@
 package com.burakkutbay.merhabadunya.service;
 
 import com.burakkutbay.merhabadunya.entity.User;
+import com.burakkutbay.merhabadunya.repository.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
-public class UserService {
+public class UserService implements IUserService {
+
 
     private static List<User> userList = new ArrayList<>();
 
+    @Override
     public List<User> getUsers() {
         return userList;
     }
 
-    public List<User> createUser(User user){
+    @Override
+    public List<User> createUser(User user) {
         userList.add(user);
         return userList;
     }
 
-    public  ResponseEntity<String> updateUser(User user){
+    @Override
+    public ResponseEntity<String> updateUser(User user) {
         if (user.getId() == null || user.getName() == "" || user.getSurname() == "") {
             return new ResponseEntity<>("Boş Alanları Doldur", HttpStatus.BAD_REQUEST);
         }
@@ -51,7 +56,8 @@ public class UserService {
         return new ResponseEntity<>("Alanlar Başarılı Şekilde Güncellendi", HttpStatus.ACCEPTED);
     }
 
-    public List<User> deleteUser(int id){
+    @Override
+    public List<User> deleteUser(int id) {
 
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getId() == id) {
@@ -62,6 +68,23 @@ public class UserService {
         }
 
         return userList;
+    }
+
+    @Override
+    public User findUser(int id) {
+        for (int i = 0; i < userList.size(); i++) {
+            //3 elemanda buldum
+            if (userList.get(i).getId() == id) {
+                User user = new User(userList.get(i).getId(), userList.get(i).getName(), userList.get(i).getSurname());
+                return user;
+
+            }
+        }
+        return null;
+    }
+
+    public String merhabaDunya() {
+        return "merhaba dunya";
     }
 
 

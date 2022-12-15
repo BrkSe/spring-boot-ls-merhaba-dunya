@@ -38,12 +38,12 @@ public class UserController {
 
     @GetMapping("")
     public List<User> getUsers() {
-        return  userService.getUsers();
+        return userService.getUsers();
     }
 
     @PostMapping("/save")
     public List<User> createUser(@RequestBody User user) {
-        return  userService.createUser(user);
+        return userService.createUser(user);
     }
 
     @PutMapping("/update")
@@ -57,6 +57,11 @@ public class UserController {
     public List<User> deleteUser(@PathVariable(value = "id") int id) {
 
         return userService.deleteUser(id);
+    }
+
+    @GetMapping("/find/{id}")
+    public User findUser(@PathVariable(value = "id") int id) {
+        return userService.findUser(id);
     }
 /*
   //getter metotda var
